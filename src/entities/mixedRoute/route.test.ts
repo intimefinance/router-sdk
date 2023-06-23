@@ -2,9 +2,12 @@ import { Ether, Token, WETH9, CurrencyAmount, Currency } from '@uniswap/sdk-core
 import { Route as V3RouteSDK, Pool, FeeAmount, TickMath, encodeSqrtRatioX96 } from '@uniswap/v3-sdk'
 import { MixedRoute, RouteV3 } from '../route'
 import { Protocol } from '../protocol'
-import { Route as V2RouteSDK, Pair } from '@uniswap/v2-sdk'
+import { Route as V2RouteSDK, Pair } from '@intimefinance/v2-sdk'
 import { MixedRouteSDK } from './route'
 import { partitionMixedRouteByProtocol } from '../../utils'
+import { V2_CORE_FACTORY_ADDRESSES } from '../../constants'
+
+const FACTORY_ADDRESS = V2_CORE_FACTORY_ADDRESSES[1]
 
 describe('MixedRoute', () => {
   const ETHER = Ether.onChain(1)
@@ -20,11 +23,31 @@ describe('MixedRoute', () => {
   const pool_2_weth = new Pool(token2, weth, FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1), 0, 0, [])
   const pool_2_3 = new Pool(token2, token3, FeeAmount.MEDIUM, encodeSqrtRatioX96(1, 1), 0, 0, [])
   /// @dev copied from v2-sdk route.test.ts
-  const pair_0_1 = new Pair(CurrencyAmount.fromRawAmount(token0, '100'), CurrencyAmount.fromRawAmount(token1, '200'))
-  const pair_0_weth = new Pair(CurrencyAmount.fromRawAmount(token0, '100'), CurrencyAmount.fromRawAmount(weth, '100'))
-  const pair_1_weth = new Pair(CurrencyAmount.fromRawAmount(token1, '175'), CurrencyAmount.fromRawAmount(weth, '100'))
-  const pair_weth_2 = new Pair(CurrencyAmount.fromRawAmount(weth, '200'), CurrencyAmount.fromRawAmount(token2, '150'))
-  const pair_2_3 = new Pair(CurrencyAmount.fromRawAmount(token2, '100'), CurrencyAmount.fromRawAmount(token3, '200'))
+  const pair_0_1 = new Pair(
+    FACTORY_ADDRESS,
+    CurrencyAmount.fromRawAmount(token0, '100'),
+    CurrencyAmount.fromRawAmount(token1, '200')
+  )
+  const pair_0_weth = new Pair(
+    FACTORY_ADDRESS,
+    CurrencyAmount.fromRawAmount(token0, '100'),
+    CurrencyAmount.fromRawAmount(weth, '100')
+  )
+  const pair_1_weth = new Pair(
+    FACTORY_ADDRESS,
+    CurrencyAmount.fromRawAmount(token1, '175'),
+    CurrencyAmount.fromRawAmount(weth, '100')
+  )
+  const pair_weth_2 = new Pair(
+    FACTORY_ADDRESS,
+    CurrencyAmount.fromRawAmount(weth, '200'),
+    CurrencyAmount.fromRawAmount(token2, '150')
+  )
+  const pair_2_3 = new Pair(
+    FACTORY_ADDRESS,
+    CurrencyAmount.fromRawAmount(token2, '100'),
+    CurrencyAmount.fromRawAmount(token3, '200')
+  )
 
   describe('path', () => {
     it('wraps pure v3 route object and successfully constructs a path from the tokens', () => {
@@ -201,11 +224,31 @@ describe('MixedRoute', () => {
       []
     )
 
-    const pair_0_1 = new Pair(CurrencyAmount.fromRawAmount(token0, '100'), CurrencyAmount.fromRawAmount(token1, '200'))
-    const pair_1_2 = new Pair(CurrencyAmount.fromRawAmount(token1, '200'), CurrencyAmount.fromRawAmount(token2, '150'))
-    const pair_0_2 = new Pair(CurrencyAmount.fromRawAmount(token0, '200'), CurrencyAmount.fromRawAmount(token2, '150'))
-    const pair_0_weth = new Pair(CurrencyAmount.fromRawAmount(token0, '100'), CurrencyAmount.fromRawAmount(weth, '100'))
-    const pair_1_weth = new Pair(CurrencyAmount.fromRawAmount(token1, '175'), CurrencyAmount.fromRawAmount(weth, '100'))
+    const pair_0_1 = new Pair(
+      FACTORY_ADDRESS,
+      CurrencyAmount.fromRawAmount(token0, '100'),
+      CurrencyAmount.fromRawAmount(token1, '200')
+    )
+    const pair_1_2 = new Pair(
+      FACTORY_ADDRESS,
+      CurrencyAmount.fromRawAmount(token1, '200'),
+      CurrencyAmount.fromRawAmount(token2, '150')
+    )
+    const pair_0_2 = new Pair(
+      FACTORY_ADDRESS,
+      CurrencyAmount.fromRawAmount(token0, '200'),
+      CurrencyAmount.fromRawAmount(token2, '150')
+    )
+    const pair_0_weth = new Pair(
+      FACTORY_ADDRESS,
+      CurrencyAmount.fromRawAmount(token0, '100'),
+      CurrencyAmount.fromRawAmount(weth, '100')
+    )
+    const pair_1_weth = new Pair(
+      FACTORY_ADDRESS,
+      CurrencyAmount.fromRawAmount(token1, '175'),
+      CurrencyAmount.fromRawAmount(weth, '100')
+    )
 
     describe('100% V3 pool route', () => {
       it('correct for 0 -> 1', () => {

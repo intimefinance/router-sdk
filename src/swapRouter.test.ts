@@ -1,5 +1,5 @@
 import { BigintIsh, CurrencyAmount, Ether, Percent, Token, TradeType, WETH9 } from '@uniswap/sdk-core'
-import { Pair, Route as V2Route, Trade as V2Trade } from '@uniswap/v2-sdk'
+import { Pair, Route as V2Route, Trade as V2Trade } from '@intimefinance/v2-sdk'
 import {
   encodeSqrtRatioX96,
   FeeAmount,
@@ -16,6 +16,9 @@ import { SwapRouter, Trade } from '.'
 import { ApprovalTypes } from './approveAndCall'
 import { MixedRouteSDK } from './entities/mixedRoute/route'
 import { MixedRouteTrade } from './entities/mixedRoute/trade'
+import { V2_CORE_FACTORY_ADDRESSES } from './constants'
+
+const FACTORY_ADDRESS = V2_CORE_FACTORY_ADDRESSES[1]
 
 describe('SwapRouter', () => {
   const ETHER = Ether.onChain(1)
@@ -50,7 +53,7 @@ describe('SwapRouter', () => {
     const amount0 = CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(liquidity))
     const amount1 = CurrencyAmount.fromRawAmount(token1, JSBI.BigInt(liquidity))
 
-    return new Pair(amount0, amount1)
+    return new Pair(FACTORY_ADDRESS, amount0, amount1)
   }
 
   const pool_0_1 = makePool(token0, token1, liquidity)

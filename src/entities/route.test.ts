@@ -2,8 +2,11 @@ import { Ether, Token, WETH9, CurrencyAmount } from '@uniswap/sdk-core'
 import { Route as V3RouteSDK, Pool, FeeAmount, TickMath, encodeSqrtRatioX96 } from '@uniswap/v3-sdk'
 import { RouteV3 } from './route'
 import { Protocol } from './protocol'
-import { Route as V2RouteSDK, Pair } from '@uniswap/v2-sdk'
+import { Route as V2RouteSDK, Pair } from '@intimefinance/v2-sdk'
 import { RouteV2 } from './route'
+import { V2_CORE_FACTORY_ADDRESSES } from '../constants'
+
+const FACTORY_ADDRESS = V2_CORE_FACTORY_ADDRESSES[1]
 
 describe('RouteV3', () => {
   const ETHER = Ether.onChain(1)
@@ -183,9 +186,21 @@ describe('RouteV2', () => {
   const token0 = new Token(1, '0x0000000000000000000000000000000000000001', 18, 't0')
   const token1 = new Token(1, '0x0000000000000000000000000000000000000002', 18, 't1')
   const weth = WETH9[1]
-  const pair_0_1 = new Pair(CurrencyAmount.fromRawAmount(token0, '100'), CurrencyAmount.fromRawAmount(token1, '200'))
-  const pair_0_weth = new Pair(CurrencyAmount.fromRawAmount(token0, '100'), CurrencyAmount.fromRawAmount(weth, '100'))
-  const pair_1_weth = new Pair(CurrencyAmount.fromRawAmount(token1, '175'), CurrencyAmount.fromRawAmount(weth, '100'))
+  const pair_0_1 = new Pair(
+    FACTORY_ADDRESS,
+    CurrencyAmount.fromRawAmount(token0, '100'),
+    CurrencyAmount.fromRawAmount(token1, '200')
+  )
+  const pair_0_weth = new Pair(
+    FACTORY_ADDRESS,
+    CurrencyAmount.fromRawAmount(token0, '100'),
+    CurrencyAmount.fromRawAmount(weth, '100')
+  )
+  const pair_1_weth = new Pair(
+    FACTORY_ADDRESS,
+    CurrencyAmount.fromRawAmount(token1, '175'),
+    CurrencyAmount.fromRawAmount(weth, '100')
+  )
 
   it('successfully assigns the protocol', () => {
     const routeOriginal = new V2RouteSDK([pair_0_1], token0, token1)

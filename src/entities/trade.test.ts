@@ -11,8 +11,10 @@ import {
   nearestUsableTick,
   encodeSqrtRatioX96,
 } from '@uniswap/v3-sdk'
-import { Pair, Route as V2RouteSDK } from '@uniswap/v2-sdk'
+import { Pair, Route as V2RouteSDK } from '@intimefinance/v2-sdk'
 import { MixedRouteSDK } from './mixedRoute/route'
+
+const FACTORY_ADDRESS = '0x5C69bEe701ef814a2B6a3EDD4B1652CB9cc5aA6f'
 
 describe('Trade', () => {
   const ETHER = Ether.onChain(1)
@@ -72,31 +74,38 @@ describe('Trade', () => {
   )
 
   const pair_0_1 = new Pair(
+    FACTORY_ADDRESS,
     CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(12000)),
     CurrencyAmount.fromRawAmount(token1, JSBI.BigInt(12000))
   )
   const pair_1_2 = new Pair(
+    FACTORY_ADDRESS,
     CurrencyAmount.fromRawAmount(token1, JSBI.BigInt(12000)),
     CurrencyAmount.fromRawAmount(token2, JSBI.BigInt(10000))
   )
   const pair_0_2 = new Pair(
+    FACTORY_ADDRESS,
     CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(10000)),
     CurrencyAmount.fromRawAmount(token2, JSBI.BigInt(12000))
   )
   const pair_2_3 = new Pair(
+    FACTORY_ADDRESS,
     CurrencyAmount.fromRawAmount(token2, JSBI.BigInt(10000)),
     CurrencyAmount.fromRawAmount(token3, JSBI.BigInt(10000))
   )
 
   const pair_weth_0 = new Pair(
+    FACTORY_ADDRESS,
     CurrencyAmount.fromRawAmount(weth, JSBI.BigInt(10000)),
     CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(10000))
   )
   const pair_weth_1 = new Pair(
+    FACTORY_ADDRESS,
     CurrencyAmount.fromRawAmount(weth, JSBI.BigInt(10000)),
     CurrencyAmount.fromRawAmount(token1, JSBI.BigInt(10000))
   )
   const pair_weth_2 = new Pair(
+    FACTORY_ADDRESS,
     CurrencyAmount.fromRawAmount(weth, JSBI.BigInt(10000)),
     CurrencyAmount.fromRawAmount(token2, JSBI.BigInt(10000))
   )

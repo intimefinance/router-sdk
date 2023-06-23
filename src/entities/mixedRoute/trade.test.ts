@@ -1,9 +1,12 @@
 import { Percent, Price, sqrt, Token, CurrencyAmount, TradeType, WETH9, Ether, Currency } from '@uniswap/sdk-core'
-import { Pair } from '@uniswap/v2-sdk'
+import { Pair } from '@intimefinance/v2-sdk'
 import { encodeSqrtRatioX96, FeeAmount, nearestUsableTick, Pool, TickMath, TICK_SPACINGS } from '@uniswap/v3-sdk'
 import JSBI from 'jsbi'
 import { MixedRouteSDK } from './route'
 import { MixedRouteTrade } from './trade'
+import { V2_CORE_FACTORY_ADDRESSES } from '../../constants'
+
+const FACTORY_ADDRESS = V2_CORE_FACTORY_ADDRESSES[1]
 
 describe('MixedRouteTrade', () => {
   const ETHER = Ether.onChain(1)
@@ -78,32 +81,39 @@ describe('MixedRouteTrade', () => {
   )
 
   const pair_0_1 = new Pair(
+    FACTORY_ADDRESS,
     CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(1000)),
     CurrencyAmount.fromRawAmount(token1, JSBI.BigInt(1000))
   )
   const pair_0_2 = new Pair(
+    FACTORY_ADDRESS,
     CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(1000)),
     CurrencyAmount.fromRawAmount(token2, JSBI.BigInt(1100))
   )
   const pair_0_3 = new Pair(
+    FACTORY_ADDRESS,
     CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(1000)),
     CurrencyAmount.fromRawAmount(token3, JSBI.BigInt(900))
   )
   const pair_1_2 = new Pair(
+    FACTORY_ADDRESS,
     CurrencyAmount.fromRawAmount(token1, JSBI.BigInt(1200)),
     CurrencyAmount.fromRawAmount(token2, JSBI.BigInt(1000))
   )
   const pair_1_3 = new Pair(
+    FACTORY_ADDRESS,
     CurrencyAmount.fromRawAmount(token1, JSBI.BigInt(1200)),
     CurrencyAmount.fromRawAmount(token3, JSBI.BigInt(1300))
   )
 
   const pair_weth_0 = new Pair(
+    FACTORY_ADDRESS,
     CurrencyAmount.fromRawAmount(WETH9[1], JSBI.BigInt(1000)),
     CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(1000))
   )
 
   const empty_pair_0_1 = new Pair(
+    FACTORY_ADDRESS,
     CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(0)),
     CurrencyAmount.fromRawAmount(token1, JSBI.BigInt(0))
   )
@@ -1209,6 +1219,7 @@ describe('MixedRouteTrade', () => {
 
       it('provides best route', async () => {
         const large_pair_0_1 = new Pair(
+          FACTORY_ADDRESS,
           CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(100000)),
           CurrencyAmount.fromRawAmount(token1, JSBI.BigInt(100000))
         )
@@ -1348,6 +1359,7 @@ describe('MixedRouteTrade', () => {
       describe('tradeType = EXACT_INPUT', () => {
         let exactIn: MixedRouteTrade<Token, Token, TradeType.EXACT_INPUT>
         const large_pair_0_1 = new Pair(
+          FACTORY_ADDRESS,
           CurrencyAmount.fromRawAmount(token0, JSBI.BigInt(100000)),
           CurrencyAmount.fromRawAmount(token1, JSBI.BigInt(100000))
         )

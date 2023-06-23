@@ -1,8 +1,8 @@
 import { Currency, Fraction, Percent, Price, sortedInsert, CurrencyAmount, TradeType, Token } from '@uniswap/sdk-core'
-import { Pair } from '@uniswap/v2-sdk'
+import { Pair } from '@intimefinance/v2-sdk'
 import { BestTradeOptions, Pool } from '@uniswap/v3-sdk'
 import invariant from 'tiny-invariant'
-import { ONE, ZERO } from '../../constants'
+import { ONE, ZERO, V2_CORE_FACTORY_ADDRESSES, V3_CORE_FACTORY_ADDRESSES } from '../../constants'
 import { MixedRouteSDK } from './route'
 
 /**
@@ -361,8 +361,12 @@ export class MixedRouteTrade<TInput extends Currency, TOutput extends Currency, 
     for (const { route } of routes) {
       for (const pool of route.pools) {
         pool instanceof Pool
-          ? poolAddressSet.add(Pool.getAddress(pool.token0, pool.token1, pool.fee))
-          : poolAddressSet.add(Pair.getAddress(pool.token0, pool.token1))
+          ? poolAddressSet.add(
+              Pool.getAddress(pool.token0, pool.token1, pool.fee, undefined, V3_CORE_FACTORY_ADDRESSES[pool.chainId])
+            )
+          : poolAddressSet.add(
+              Pair.getAddress(V2_CORE_FACTORY_ADDRESSES[pool.chainId] as string, pool.token0, pool.token1)
+            )
       }
     }
 
